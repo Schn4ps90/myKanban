@@ -1,14 +1,26 @@
-Vue.component('listcard', {
-    props: ['title', 'text']
-});
-
 new Vue({
-    el: "#app",
-    data: {
-        lists: [
-            {title: "title1", text: "text1"},
-            {title: "title2", text: "text2"},
-            ]
+  el: '#kanban',
+  data: {
+    newLeftPlateName: '',
+    newCenterPlateName: '',
+    newRightPlateName: '',
+    leftPlates: [],
+    centerPlates: [],
+    rightPlates: [],
+    
+  },
+  methods: {
+    addNewLeftPlate: function() {
+      this.leftPlates.push(this.newLeftPlateName)
+      this.newLeftPlateName = ''
     },
-    template: '<listcard><div class="card"><h2>{{ title }}</h2><p>{{ text }}</p></div></listcard>'
+    addNewCenterPlate: function() {
+        this.centerPlates.push(this.newCenterPlateName)
+        this.newCenterPlateName = ''
+      },
+    addNewRightPlate: function() {
+        this.rightPlates.push(this.newRightPlateName)
+        this.newRightPlateName = ''
+      },
+  }
 })

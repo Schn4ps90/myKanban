@@ -1,29 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<script src="https://unpkg.com/vue@2.3.4"></script>
-	<script src="https://cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
-	<script src="https://cdn.rawgit.com/David-Desmaisons/Vue.Draggable/master/dist/vuedraggable.min.js"></script>
-	<style>
-		.list-complete-item {
-		  padding: 4px;
-		  margin-top: 4px;
-		  border: solid 1px;
-		  transition: all 1s;
-		}
-	</style>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@2.3.4"></script>
+  <script src="https://cdn.jsdelivr.net/sortable/1.4.2/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+  <script src="https://cdn.rawgit.com/David-Desmaisons/Vue.Draggable/master/dist/vuedraggable.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+    .col-sm-4 {
+    padding: 5px 2px 10px 15px;
+  }
+    .dragArea {
+  min-height: 15px;
+  background-color: grey;
+  opacity: 0.8;
+}
+    .panel  {
+     font-size:150%; 
+    }
+    .form-control {
+      background-color: white;
+      opacity: 0.8;
+    }
+    .close-plate {
+      font-size: 100%;
+    }
+  </style>
 </head>
 <body>
-	
-	<div id="app">
-	    <div v-for="list in lists">
-	        <listcard :title="list.title" :text="list.text"></listcard>
-	    </div>
-	</div>
+    <div id="kanban" class="row">
+      <div class="col-sm-4" style="background-color:#f44253;"><h2>New</h2>
+          <draggable :leftPlates="leftPlates" class="dragArea" :options="{group:'tasks'}">
+              <template v-for="(newLeftPlateName, index) in leftPlates">
+                <div class="panel panel-warning">
+                <a href="#">{{ newLeftPlateName }}</a>
+                <button @click="leftPlates.splice(index, 1)">
+                  <div class="close-plate">X</div>
+                </button>
+                </div>
+               </template>
+          </draggable>
+        <input 
+        class="form-control"
+        v-model="newLeftPlateName"
+        @keyup.enter="addNewLeftPlate"
+        placeholder="Add a task"
+        >
+      </div>
+      
+      <div class="col-sm-4" style="background-color:#ffff33;"><h2>In-Process</h2>
+        <draggable :centerPlates="centerPlates" class="dragArea" :options="{group:'tasks'}">
+        <template v-for="(newCenterPlateName, index) in centerPlates">
+            <div class="panel panel-warning"><a href="#"></a>
+              <a href="#">{{ newCenterPlateName }}</a>
+              <button @click="centerPlates.splice(index, 1)">
+                <div class="close-plate">X</div>
+              </button>
+            </div>
+        </template>
+        </draggable>
+        <input
+        class="form-control"
+        v-model="newCenterPlateName"
+        @keyup.enter="addNewCenterPlate"
+        placeholder="Add a task"
+        >
+      </div>
 
+      <div class="col-sm-4" style="background-color:#66ff66;"><h2>Done</h2>
+      <draggable :rightPlates="rightPlates" class="dragArea" :options="{group:'tasks'}">
+        <template v-for="(listName, index) in rightPlates">
+            <div class="panel panel-success" style="display:block; min-height: 20px"> <a href="#"></a>
+              <a href="#">{{ listName }}</a>
+              <button @click="rightPlates.splice(index, 1)">
+                <div class="close-plate">X</div>
+              </button>
+            </div>
+        </template>
+        </draggable>
+        <input
+        class="form-control"
+        v-model="newRightPlateName"
+        @keyup.enter="addNewRightPlate"
+        placeholder="Add a task"
+        >
+      </div>
+    </div>
 <script src="app.js"></script>
 </body>
 </html>
